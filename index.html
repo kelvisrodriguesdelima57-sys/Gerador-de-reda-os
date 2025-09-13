@@ -1,62 +1,149 @@
-border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 1rem;
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fandangos</title>
+    <link rel="icon" type="image/png" href="src/fandangos.png">
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
 
-        .senha-container {
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #FFB347, #FFCC33);
+        }
+
+        #centralizar {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 1.5rem;
+            color: #FF6F61;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        input[type="text"], input[type="password"] {
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .Mostrar {
             position: relative;
         }
 
-        .toggle-senha {
+        #VerSenha {
             position: absolute;
             right: 10px;
             top: 50%;
             transform: translateY(-50%);
+            border: none;
+            background: none;
             cursor: pointer;
             font-size: 1.2rem;
         }
 
-        button {
-            padding: 0.75rem;
+        #Logar {
             background-color: #FF6F61;
             color: white;
+            padding: 0.75rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1rem;
             cursor: pointer;
             transition: background-color 0.3s;
         }
 
-        button:hover {
-            background-color: #FF4B3E;
+        #Logar:hover {
+            background-color: #FF4C3B;
+        }
+
+        #TamanhoN {
+            margin-top: 1rem;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        @media(max-width: 480px) {
+            #centralizar {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="centralizar">
-        <h1>Fandangos</h1>
-        <form>
-            <input type="text" placeholder="Usuário" required>
-            <div class="senha-container">
-                <input type="password" placeholder="Senha" id="senha" required>
-                <span class="toggle-senha" onclick="toggleSenha()">👁️</span>
-            </div>
-            <button type="submit">Entrar</button>
+    <section id="centralizar">
+        <h1>FANDANGOS</h1>
+        <form id="Enviar">
+            <label for="ra">RA</label>
+            <input type="text" id="ra" placeholder="Ex: 00011198235xSP" required>
+
+            <div class="Mostrar">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" placeholder="Senha" required>
+                <button type="button" id="VerSenha">👁️</button>
+            </div>          
+            <button id="Logar" type="submit">Realizar atividades</button> 
         </form>
-    </div>
+        <article id="TamanhoN" aria-live="polite"></article>
+    </section>
 
     <script>
-        function toggleSenha() {
-            const senha = document.getElementById('senha');
-            const toggle = document.querySelector('.toggle-senha');
-            if (senha.type === 'password') {
-                senha.type = 'text';
-                toggle.textContent = '🙈';
+        // Mostrar/Ocultar senha com emoji
+        const senhaInput = document.getElementById("senha");
+        const btnVerSenha = document.getElementById("VerSenha");
+
+        btnVerSenha.addEventListener("click", () => {
+            if (senhaInput.type === "password") {
+                senhaInput.type = "text";
+                btnVerSenha.textContent = "🙈"; // senha visível
             } else {
-                senha.type = 'password';
-                toggle.textContent = '👁️';
+                senhaInput.type = "password";
+                btnVerSenha.textContent = "👁️"; // senha oculta
             }
-        }
+        });
+
+        // Submissão do formulário
+        const form = document.getElementById("Enviar");
+        const feedback = document.getElementById("TamanhoN");
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const ra = document.getElementById("ra").value.trim();
+            const senha = senhaInput.value.trim();
+
+            if(ra && senha) {
+                feedback.textContent = `RA ${ra} enviado com sucesso! 🎉`;
+                feedback.style.color = "green";
+            } else {
+                feedback.textContent = "Preencha todos os campos.";
+                feedback.style.color = "red";
+            }
+        });
     </script>
 </body>
 </html>
